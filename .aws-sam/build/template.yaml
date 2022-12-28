@@ -1,0 +1,98 @@
+Resources:
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: cloud-challenge-db
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name:
+        Fn::Sub:
+        - ${ResourceName} From Stack ${AWS::StackName}
+        - ResourceName: Api
+      StageName: Prod
+      DefinitionBody:
+        openapi: '3.0'
+        info: {}
+        paths:
+          /items/{id}:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorFunction.Arn}/invocations
+              responses: {}
+          /items:
+            put:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorFunction.Arn}/invocations
+              responses: {}
+      EndpointConfiguration: REGIONAL
+      TracingEnabled: true
+      Cors:
+        AllowOrigin:
+        - corsallowedorigin
+        AllowCredentials: true
+  VisitorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: visitorLambdaFunction
+      Description:
+        Fn::Sub:
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: VisitorFunction
+      CodeUri: VisitorFunction
+      Handler: handler.handler
+      Runtime: python3.8
+      MemorySize: 1024
+      Timeout: 30
+      Tracing: Active
+      Events:
+        ApiGETitemsid:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: GET
+            RestApiId:
+              Ref: Api
+        ApiPUTitems:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: PUT
+            RestApiId:
+              Ref: Api
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Table
+          TABLE_ARN:
+            Fn::GetAtt:
+            - Table
+            - Arn
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+    Metadata:
+      SamResourceId: VisitorFunction
+  VisitorFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${VisitorFunction}
+Transform: AWS::Serverless-2016-10-31
