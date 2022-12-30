@@ -21,4 +21,4 @@ jobs:
       # Run Unit tests- Specify unit tests here
 
       # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name prod --s3-bucket aws-cli-managed-challenge --capabilities CAPABILITY_IAM --region us-east-1
+      - run: sam sync  --stack-name prod --s3-bucket aws-cli-managed-challenge --capabilities CAPABILITY_IAM --region us-east-1
