@@ -3,11 +3,11 @@ import json
 import boto3
 from moto import mock_dynamodb
 
-from src.Function.handler import handler, getitem
+from src.Function.handler import handler, getitem, putitem
 
 
 @mock_dynamodb
-def test_getitem():
+def test_handle():
 
     # Initiate a mock dynamodb
     table_name = "mock_db"
@@ -26,7 +26,8 @@ def test_getitem():
         BillingMode="PAY_PER_REQUEST"
     )
 
-    # Put some mock data in the database
+
+# Put some mock data in the database
     mock_data = {'id':'1', 'visitors': 2}
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table(table_name)
@@ -38,10 +39,8 @@ def test_getitem():
     # Test get event
     #mock event
     mock_get_event = {'routeKey': "GET /items/{id}", 'pathParameters': {'id': '1'}}
-    #call handler
-    result = handler(mock_get_event, table)
-    # result = getitem(table, '1')
-    # print(result)
+    #call getItem
+    result = getitem(table,'1')
     response = {
         'headers':
             {
@@ -52,11 +51,8 @@ def test_getitem():
 
     assert response == result
 
-    #Test put event
-    # mock_put_event = {'routeKey': "PUT /items", 'body':{'id':'1', 'visiors': 4}}
-    mock_put_event = {'routeKey': 'PUT /items', 'body': json.dumps({'id': '1', 'visitors': 10})}
-
-    result = handler(mock_put_event, table)
+    # mock_put_event = {'routeKey': 'PUT /items', 'body': json.dumps({'id': '1', 'visitors': 9})}
+    result = putitem(table, {'id': '1', 'visitors': 9})
     print(result)
     data = table.get_item(
         Key = {
@@ -65,7 +61,12 @@ def test_getitem():
     )
     print(data)
 
-    assert data['Item'] == {'id': '1', 'visitors': 10}
+    assert data['Item'] == {'id': '1', 'visitors': 9}
+
+
+#Test put event
+# @mock_dynamodb
+# def test_putitem():
 
 
 

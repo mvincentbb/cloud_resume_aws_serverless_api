@@ -8,7 +8,7 @@ headers = {
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('challenge_DB')
 
-def handler(event, table):
+def handler(event, context):
     # Log the event argument for debugging and for use in local development.
 
     if str(event['routeKey']) == "GET /items/{id}":
