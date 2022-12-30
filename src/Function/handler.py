@@ -5,11 +5,13 @@ headers = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
     }
-dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-table = dynamodb.Table('challenge_DB')
+
 
 def handler(event, context):
     # Log the event argument for debugging and for use in local development.
+
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('cloud-challenge-db')
 
     if str(event['routeKey']) == "GET /items/{id}":
         item_id = event['pathParameters']['id']
