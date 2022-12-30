@@ -1,9 +1,9 @@
 name: deploy to lambda
 on:
-  push:
-    branches:
-      - master
-
+  workflow_run:
+    workflows: [unitest]
+    types:
+      - completed
 jobs:
   deploy_source:
     name: build and deploy lambda
