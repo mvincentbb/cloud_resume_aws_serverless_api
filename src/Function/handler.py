@@ -2,9 +2,9 @@ import json, boto3
 
 
 headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-    }
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+}
 
 
 def handler(event, context):
@@ -13,23 +13,22 @@ def handler(event, context):
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('cloud-challenge-db')
 
-    if str(event['routeKey']) == "GET /items/{id}":
+    if str(event['httpMethod']) == "GET" and str(event['resource']) == "/items/{id}":
         item_id = event['pathParameters']['id']
         return getitem(table, item_id)
 
 
-    elif event['routeKey'] == 'PUT /items':
+    elif event['httpMethod'] == 'PUT':
         request_body = json.loads(event['body'])
         #Put item in DynamoDB
         return putitem(table, request_body)
 
     else:
-         return   {
+        return   {
             'headers': headers,
             'statusCode' : 400,
             'body':  'error bad request'
         }
-
 
 def getitem(table,item_id):
     result = table.get_item(

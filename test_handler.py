@@ -34,11 +34,7 @@ def test_handle():
     table.put_item(
     Item = mock_data
     )
-
-
     # Test get event
-    #mock event
-    mock_get_event = {'routeKey': "GET /items/{id}", 'pathParameters': {'id': '1'}}
     #call getItem
     result = getitem(table,'1')
     response = {
