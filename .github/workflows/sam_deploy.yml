@@ -1,4 +1,4 @@
-mame: sam deploy
+name: sam deploy
 on:
   push:
     branches:
