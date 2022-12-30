@@ -23,4 +23,4 @@ jobs:
           aws_region: ${{  secrets.AWS_REGION  }}
           function_name: visitorLambdaFunction
 #          zip_file: bundle.zip
-          source: ./src/Function/handler.py
+          source: ./src/Function
