@@ -2,7 +2,6 @@ Resources:
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: cloud-challenge-db
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
