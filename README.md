@@ -1,6 +1,5 @@
 # Cloud Resume Challenge - Backend
 
----
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
@@ -8,8 +7,6 @@
 This project is the implementation of the backend of [cloud resume challenge](https://cloudresumechallenge.dev/docs/the-challenge/aws/)    It implements SAM template which define the Infrastructure . 
 
 ## Technologies
-
----
 
 - AWS API GATEWAY
 - AWS LAMBDA FONCTION
@@ -20,8 +17,6 @@ This project is the implementation of the backend of [cloud resume challenge](ht
 - GITACTION
 
 ## Setup
-
----
 
 - Prerequisites
     1. Have an AWS account
