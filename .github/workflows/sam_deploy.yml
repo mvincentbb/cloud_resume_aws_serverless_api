@@ -2,7 +2,7 @@ name: sam deploy
 on:
   push:
     branches:
-      - master
+      - dev
 jobs:
   build-deploy-sam:
     name: Build and Deploy SAM
