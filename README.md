@@ -1,5 +1,3 @@
-# Cloud resume challenge :  BACKEND
-
 # Cloud Resume Challenge - Backend
 
 ---
